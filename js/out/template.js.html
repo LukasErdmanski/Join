@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: template.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: template.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Template for creating a task in the backlog.
+ * @param {Array} newTask - The new generated task.
+ * @param {number} i - This marks the position of the task in the JSON 'allTasks'.
+ * @returns {HTMLElement} The HTML Element of the new task (one line) in the backlog.
+ */
+function newTaskTemp(newTask, i) {
+  return /*html*/ `
+  &lt;div class="d-flex position-relative align-items-sm-center border-1 rounded bg-grey mb-2">
+    &lt;div 
+      style="background-color:${colorsCategory[newTask.category]}"
+      title="${newTask.category}"
+      class="category-task position-absolute top-0 bottom-0">
+    &lt;/div>
+    &lt;div class="d-flex justify-content-sm-between justify-content-around w-100 align-items-center flex-column flex-sm-row ms-4">
+      &lt;div class="d-flex align-items-center flex-column flex-sm-row me-sm-0">
+          &lt;div>
+            &lt;img
+              src="${newTask.userForTask.avatar}"
+              class="user-show cursor-pointer m-sm-3 m-2 rounded-circle"
+            />
+          &lt;/div>
+          &lt;div class="d-flex  flex-column  align-items-center  align-items-sm-start mb-2  mb-sm-0">
+            &lt;p class="m-0">
+              ${newTask.userForTask.name}
+            &lt;/p>
+              &lt;a 
+                class="m-0" 
+                href="mailto:${newTask.userForTask.email}" 
+                alt="${newTask.userForTask.email}">
+                  ${newTask.userForTask.email}
+              &lt;/a>          
+          &lt;/div>
+        &lt;/div>
+        &lt;div class="d-none d-sm-block text-center">
+          &lt;h5 class="mb-0 m-2">
+            ${newTask.category}
+          &lt;/h5>
+        &lt;/div>
+        &lt;div class="d-flex justify-content-center justify-content-sm-end align-items-center flex-sm-row flex-column ms-1 ms-sm-0 mb-2 mb-sm-0">
+          &lt;div
+            class="d-flex justify-content-center align-items-center justify-content-sm-end align-items-sm-start flex-sm-row flex-column me-sm-2 cursor-pointer"
+            id="backlogDetails${i}">
+            &lt;b class="d-block d-sm-none main-color text-uppercase">
+              Description: 
+            &lt;/b>
+            &lt;span class="hiddenScrollbar overflow-auto text-center text-sm-end text-break max-height-100 width-150">
+              ${newTask.description}
+            &lt;/span>
+          &lt;/div>
+        &lt;/div>      
+      &lt;/div>
+      &lt;div class="d-flex justify-content-centerpt-sm-0">
+        &lt;button
+          class="btn-close p-2 m-auto"
+          type="button"
+          onclick="deleteTask(${i}, generateAllTasks)"
+          aria-label="Close">
+        &lt;/button>
+      &lt;/div>
+  &lt;/div>
+  `;
+}
+
+/**
+ * Generates a single task item in the kanban column in the board.
+ * @param {JSON} task - The task from allTasks array with a certain filtered category.
+ * @returns {HTMLElement} The HTML code for the task item defined with the task paramter
+ * for a specific kanban column in the board.
+ */
+function genHTMLBoardTaskItem(task) {
+  return /* html */ `
+    &lt;!-- a column task item -->
+    &lt;div 
+      id="${task.id}" 
+      class="card green board-border my-2 cursor-pointer" 
+      draggable="true" 
+      ondragend="stopSlideJustOnDrop()"
+      ondragstart="startDragging(${task["id"]})" 
+      data-bs-toggle="modal" 
+      data-bs-target="#staticBackdrop"
+      onclick="openModal(${task["id"]})">
+        &lt;div class="card-header p-1 fs-6">
+        &lt;span 
+          class="badge p-1 fw-semibold" 
+          style="background-color: ${colorsCategory[task["category"]]}">
+            ${task["category"]}
+        &lt;/span>
+    &lt;/div>
+        &lt;div class="card-body text-dark p-1">
+            &lt;p class="card-title fw-bold m-0">${task["title"]}&lt;/p>
+            &lt;p class="card-text d-none">${task["description"]} &lt;/p>
+        &lt;/div>
+
+        &lt;div class="card-footer bg-transparent p-1 d-flex justify-content-between align-items-center gap-1">
+            &lt;span class="fw-semibold text-dark">${task["date"]}&lt;/span>
+            &lt;div class="cardAssignedTo">
+                &lt;img 
+                  src="${task.userForTask.avatar}" 
+                  class="rounded-circle"
+                />
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    `;
+}
+
+/**
+ * Creates the buttons for the modal in the board with onclick functions.
+ * @param {number} indexTask - The location of the task in alltasks JSON.
+ */
+function renderButtons(indexTask) {
+  document.getElementById("modalBoardBtns").innerHTML = /*html*/ `
+  &lt;input 
+    title="Delete and close the task." 
+    id="modalDeleteBtn"
+    class="btn btn-outline-danger p-1 p-sm-2 me-1 me-sm-3" 
+    type="button"
+    data-bs-dismiss="modal" 
+    value="Delete" 
+    onclick="deleteTask(${indexTask}, renderAllColumns)" >
+  &lt;div>
+    &lt;input 
+      title="Cancel the changes and close the task." 
+      id="modalCancelBtn"
+      class="btn btn-outline-secondary p-1 p-sm-2 me-1 me-sm-3" 
+      type="button"
+      data-bs-dismiss="modal" 
+      value="Cancel">
+    &lt;input 
+      title="Save the changes to the task and close it." 
+      id="modalSaveBtn"
+      class="btn btn-primary p-1 p-sm-2" 
+      type="submit" 
+      value="Save" 
+      onclick="adaptTask(${indexTask}, renderAllColumns)">
+  &lt;/div>
+  `;
+}
+
+/**
+ * Creates an avatar for each user on the add task sub page.
+ * @param {Object} user - This contains all information about a user.
+ * @param {number} i - This marks the position of the user in the array users.
+ * @returns {HTMLImageElement} The HTML Element of an user avatar with its attributes.
+ */
+function generateUsers(user, i) {
+  return /*html*/ `
+  &lt;img 
+    title="${user.name}" 
+    id="selected${i}" 
+    onclick="selectUser(${i})" 
+    class="user-show cursor-pointer border border-white rounded-circle" 
+    src="${user.avatar}" 
+    alt=""
+  />
+`;
+}
+
+/**
+ * Creates an avatar image with a blue frame for viewing in the modal in the board.
+ * @param {string} user - This contains all information about a user.
+ * @param {number} i - This marks the position of user in the array users.
+ * @param {number} id - The id of the task.
+ * @returns {HTMLImageElement} The HTML image element of the selected user (its avatar) with a blue border.
+ */
+function blueBorderImg(user, i, id) {
+  return /* html */ `
+&lt;img class="assigendToImg rounded-circle border border-4 border-primary m-1" src="${user.avatar}" onclick="changeSelectedUser(${i}, ${id})">
+`;
+}
+
+/**
+ * Creates an avatar image with a white frame for viewing in the modal in the board.
+ * @param {string} user - This contains all information about a user.
+ * @param {number} i - This marks the position of user in the array users.
+ * @param {number} id - The id of the task.
+ * @returns {HTMLImageElement} The HTML image element of the selected user (its avatar) with a white border.
+ */
+function whiteBorderImg(user, i, id) {
+  return /* html */ `
+  &lt;img class="assigendToImg rounded-circle border border-4 border-white m-1" src="${user.avatar}" onclick="changeSelectedUser(${i}, ${id})">
+`;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#adaptTask">adaptTask</a></li><li><a href="global.html#addChangeDirectionClassReverseChildren">addChangeDirectionClassReverseChildren</a></li><li><a href="global.html#addTask">addTask</a></li><li><a href="global.html#allCategories">allCategories</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#blueBorderImg">blueBorderImg</a></li><li><a href="global.html#BOARD_TOAST">BOARD_TOAST</a></li><li><a href="global.html#changeModalAvatarAfterSelect">changeModalAvatarAfterSelect</a></li><li><a href="global.html#changeModalUrgencyColor">changeModalUrgencyColor</a></li><li><a href="global.html#changeSelectedUser">changeSelectedUser</a></li><li><a href="global.html#checkIfLogin">checkIfLogin</a></li><li><a href="global.html#checkPassword">checkPassword</a></li><li><a href="global.html#checkSelectedAvatar">checkSelectedAvatar</a></li><li><a href="global.html#colorsCategory">colorsCategory</a></li><li><a href="global.html#configDragDropPressHoldMode">configDragDropPressHoldMode</a></li><li><a href="global.html#correctActiveIndicator">correctActiveIndicator</a></li><li><a href="global.html#currentDraggedElement">currentDraggedElement</a></li><li><a href="global.html#currentUser">currentUser</a></li><li><a href="global.html#currentUserImage">currentUserImage</a></li><li><a href="global.html#DATE_PICKER_SETTINGS">DATE_PICKER_SETTINGS</a></li><li><a href="global.html#dd">dd</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteUnsafedInput">deleteUnsafedInput</a></li><li><a href="global.html#filterNames">filterNames</a></li><li><a href="global.html#findUserIndexForOpenModal">findUserIndexForOpenModal</a></li><li><a href="global.html#formBoard">formBoard</a></li><li><a href="global.html#formRegistery">formRegistery</a></li><li><a href="global.html#generateAllTasks">generateAllTasks</a></li><li><a href="global.html#generateUsers">generateUsers</a></li><li><a href="global.html#genHTMLBoardTaskItem">genHTMLBoardTaskItem</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getRightSrcOfImg">getRightSrcOfImg</a></li><li><a href="global.html#handleFormAddTask">handleFormAddTask</a></li><li><a href="global.html#handleFormIndex">handleFormIndex</a></li><li><a href="global.html#handleFormLogin">handleFormLogin</a></li><li><a href="global.html#hideExitDoor">hideExitDoor</a></li><li><a href="global.html#highlightAvatar">highlightAvatar</a></li><li><a href="global.html#highlightCarouselControl">highlightCarouselControl</a></li><li><a href="global.html#highlightCarouselControlOnClick">highlightCarouselControlOnClick</a></li><li><a href="global.html#hightlight">hightlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#indexOflastSelectedUserOpenedModal">indexOflastSelectedUserOpenedModal</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBacklog">initBacklog</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initIndex">initIndex</a></li><li><a href="global.html#loadCurrentDate">loadCurrentDate</a></li><li><a href="global.html#loadFromBackend">loadFromBackend</a></li><li><a href="global.html#loadJSONFromServer">loadJSONFromServer</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#loginAsGuest">loginAsGuest</a></li><li><a href="global.html#loginAsUser">loginAsUser</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#mm">mm</a></li><li><a href="global.html#modalGenAllUser">modalGenAllUser</a></li><li><a href="global.html#modalHideAllUsers">modalHideAllUsers</a></li><li><a href="global.html#modalShowAllUsers">modalShowAllUsers</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#MY_CAROUSEL">MY_CAROUSEL</a></li><li><a href="global.html#MY_CAROUSEL_OPTIONS">MY_CAROUSEL_OPTIONS</a></li><li><a href="global.html#MY_MODAL">MY_MODAL</a></li><li><a href="global.html#MY_MODAL_LOGIN">MY_MODAL_LOGIN</a></li><li><a href="global.html#newTaskTemp">newTaskTemp</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#REGISTRATION_TOAST">REGISTRATION_TOAST</a></li><li><a href="global.html#removedChangeDirectionClassReverseBackChildren">removedChangeDirectionClassReverseBackChildren</a></li><li><a href="global.html#removeHeight">removeHeight</a></li><li><a href="global.html#removeHighlightCarouselControl">removeHighlightCarouselControl</a></li><li><a href="global.html#removeHightlight">removeHightlight</a></li><li><a href="global.html#renderAllColumns">renderAllColumns</a></li><li><a href="global.html#renderButtons">renderButtons</a></li><li><a href="global.html#renderColumn">renderColumn</a></li><li><a href="global.html#reverseChildren">reverseChildren</a></li><li><a href="global.html#reversed">reversed</a></li><li><a href="global.html#saveInBackend">saveInBackend</a></li><li><a href="global.html#saveJSONToServer">saveJSONToServer</a></li><li><a href="global.html#saveRegristration">saveRegristration</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#selectedUser">selectedUser</a></li><li><a href="global.html#selectUser">selectUser</a></li><li><a href="global.html#setDataBsTouchOnWinResize">setDataBsTouchOnWinResize</a></li><li><a href="global.html#setDatePickerSettings">setDatePickerSettings</a></li><li><a href="global.html#setHeight">setHeight</a></li><li><a href="global.html#setScrollbarHeightOfContentContainerOnSubPages">setScrollbarHeightOfContentContainerOnSubPages</a></li><li><a href="global.html#showAllUser">showAllUser</a></li><li><a href="global.html#showAllUserAndDisable">showAllUserAndDisable</a></li><li><a href="global.html#showExitDoor">showExitDoor</a></li><li><a href="global.html#showPassword">showPassword</a></li><li><a href="global.html#showToastOnSingIn">showToastOnSingIn</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#startSlideNext">startSlideNext</a></li><li><a href="global.html#startSlidePrev">startSlidePrev</a></li><li><a href="global.html#stopSlideJustOnDrop">stopSlideJustOnDrop</a></li><li><a href="global.html#stopSlideNext">stopSlideNext</a></li><li><a href="global.html#stopSlidePrev">stopSlidePrev</a></li><li><a href="global.html#switchExitDoor">switchExitDoor</a></li><li><a href="global.html#timeOut">timeOut</a></li><li><a href="global.html#TOAST_LIVE_EXAMPLE1">TOAST_LIVE_EXAMPLE1</a></li><li><a href="global.html#TOAST_TRIGGER1">TOAST_TRIGGER1</a></li><li><a href="global.html#toastForEvent">toastForEvent</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#urgencyBoard">urgencyBoard</a></li><li><a href="global.html#urgencyCol">urgencyCol</a></li><li><a href="global.html#users">users</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#verifyNull">verifyNull</a></li><li><a href="global.html#whiteBorderImg">whiteBorderImg</a></li><li><a href="global.html#yyyy">yyyy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sat Oct 08 2022 09:59:19 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

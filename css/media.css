@@ -1,0 +1,95 @@
+/* Additional class to change the default cycle direction of bootstrap carousel
+ for sliding on hover with a dragged task item over the carousel prev button  */
+@media all and (transform-3d), (-webkit-transform-3d) {
+  .changeDirection .active.carousel-item-start,
+  .changeDirection .carousel-item-prev:not(.carousel-item-end) {
+    -webkit-transform: translateX(100%) !important;
+    transform: translateX(100%) !important;
+    width: calc(100vw - 142px) !important;
+  }
+
+  .changeDirection .active.carousel-item-end,
+  .changeDirection .carousel-item-next:not(.carousel-item-start) {
+    -webkit-transform: translateX(-100%) !important;
+    transform: translateX(-100%) !important;
+    width: calc(100vw - 142px) !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .you-are-here {
+    border-left: none !important;
+    margin-left: 0px !important;
+  }
+
+  .navbar-nav a:hover {
+    border-left: none !important;
+    border-bottom: transparent !important;
+    margin-left: 0px !important;
+  }
+
+  .logo {
+    height: 40px !important;
+  }
+
+  .avatar-board {
+    position: absolute;
+    width: fit-content;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: 2px transparent !important;
+  }
+
+  .avatar-board img {
+    height: 40px !important;
+    width: 40px !important;
+  }
+
+  .cardAssignedTo img {
+    width: 32px;
+    height: 32px;
+  }
+
+  #currentUser {
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 576px) {
+  .all {
+    all: unset;
+  }
+
+  .carousel-item {
+    width: 23% !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .sm-column {
+    flex-direction: column;
+  }
+
+  .add-Task-width {
+    width: 80vw;
+  }
+
+  .flex-media {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar-border {
+    border-left: none !important;
+  }
+
+  .carousel {
+    gap: 2px;
+  }
+
+  .carousel-item {
+    padding: 0px !important;
+  }
+}

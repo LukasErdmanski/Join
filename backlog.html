@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/media.css" />
+
+    <link rel="shortcut icon" href="./img/joinlogo.png" type="image/x-icon" />
+    <script src="./js/mini_backend.js"></script>
+    <!-- safe-area css -->
+    <link rel="stylesheet" href="./css/safe-area.css" />
+  </head>
+
+  <body onload="initBacklog()">
+    <div id="safeArea">
+      <div
+        class="app-window h-100 w-100 d-flex flex-column flex-md-row overflow-hidden"
+      >
+        <div w3-include-html="navbar.html" class="top-0 z-index-100"></div>
+
+        <!-- work area (right site: content of the nav-link) -->
+        <div class="px-4 pt-4 overflow-auto h-100 w-100 hiddenScrollbar">
+          <div class="d-flex position-sticky top-0 z-index-100 bg-white">
+            <div
+              class="w-100 d-flex justify-content-sm-between justify-content-start align-items-sm-center flex-column flex-sm-row z-index-100"
+            >
+              <div>
+                <h2><strong>Backlog</strong></h2>
+                <p class="main-color">Learning Management System Project</p>
+              </div>
+              <div class="mb-2 mb-sm-0">
+                <input
+                  class="rounded w-100 border-0 bg-grey p-2 text-center"
+                  id="searchTask"
+                  onkeyup="filterNames()"
+                  placeholder="Search for user or category"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="d-flex justify-content-between">
+              <div>
+                <h3 class="main-color fw-bold fs-5 d-none d-sm-block">
+                  ASSIGNED TO
+                </h3>
+              </div>
+              <div>
+                <h3 class="d-none fw-bold fs-5 d-sm-block main-color">
+                  CATEGORY
+                </h3>
+              </div>
+              <div>
+                <h3 class="d-none fw-bold fs-5 d-sm-block main-color">
+                  DETAILS
+                </h3>
+              </div>
+            </div>
+            <div
+              id="freshTask"
+              class="overflow-auto vh-70 hide-scroll-bar"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/helpers.js"></script>
+    <script src="./js/template.js"></script>
+    <script src="./js/backlog.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>

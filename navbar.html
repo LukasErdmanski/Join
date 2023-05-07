@@ -1,0 +1,146 @@
+<!-- navbar -->
+<nav
+  class="
+    navbar
+    main-bg-color
+    navbar-expand-md navbar-dark
+    flex-column
+    py-0
+    pt-md-3
+    h-100
+  "
+>
+  <!-- logo + navbar-nav + avatar -->
+  <div
+    class="
+      container-fluid
+      flex-grow-1
+      p-0
+      d-flex
+      flex-md-column
+      align-items-start
+    "
+  >
+    <!-- logo + mobile menu button -->
+    <div
+      class="
+        container-fluid
+        d-flex
+        justify-content-between
+        align-items-md-center
+        p-2 p-md-0
+        mt-0 mt-md-2
+      "
+    >
+      <a class="navbar-brand navbar-border py-0 ps-md-4" href="index.html">
+        <img class="logo ps-0 ps-md-2" src="./img/logo.png" />
+      </a>
+      <div class="d-flex justify-content-center align-items-center">
+        <button
+          class="navbar-toggler p-1"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+    <!-- navbar-nav-->
+    <div
+      class="collapse navbar-collapse align-items-md-start"
+      id="navbarSupportedContent"
+    >
+      <ul
+        class="
+          navbar-nav
+          d-flex
+          flex-grow-1 flex-row
+          justify-content-around
+          flex-md-column
+          fs-4
+          me-md-2
+          mt-md-2
+          mb-1 mb-md-0
+          p-0
+          pe-md-4
+          pt-md-5
+        "
+      >
+        <li class="nav-item navbar-border">
+          <a
+            class="nav-link my-0 my-0 my-sm-2 p-0 pt-sm-1 ps-sm-4"
+            id="navBoard"
+            href="index.html"
+          >
+            Board
+          </a>
+        </li>
+        <li class="nav-item navbar-border">
+          <a
+            class="nav-link my-0 my-sm-2 p-0 pt-sm-1 ps-sm-4"
+            id="navInBacklog"
+            href=" backlog.html"
+          >
+            Backlog
+          </a>
+        </li>
+        <li class="nav-item navbar-border">
+          <a
+            class="nav-link my-0 my-sm-2 p-0 pt-sm-1 ps-sm-4 text-nowrap"
+            id="addTaskNav"
+            href="addTask.html"
+          >
+            Add Task
+          </a>
+        </li>
+        <li class="nav-item navbar-border">
+          <a
+            class="nav-link my-0 my-sm-2 p-0 pt-sm-1 ps-sm-4"
+            id="navHelp"
+            href=" help.html"
+          >
+            Help
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- avatar -->
+    <div
+      class="
+        container-fluid
+        mb-0
+        d-flex
+        justify-content-center
+        align-items-center
+        flex-md-column
+        navbar-border
+        py-2
+        avatar-board
+        mx-auto
+        my-auto
+      "
+      onclick="switchExitDoor()"
+      onmouseover="showExitDoor()"
+      onmouseout="hideExitDoor()"
+    >
+      <img
+        class="rounded-circle user-show mb-2"
+        id="currentUser"
+        src=" img/lukas.png"
+        alt="profile image"
+      />
+      <img
+        id="door"
+        src="./img/logout.png"
+        onclick="logout()"
+        class="hide ms-2 ms-md-0 mb-2 mb-md-4 mbmt-0 mt-md-4 door door-out"
+        title="Logout"
+      />
+    </div>
+  </div>
+</nav>

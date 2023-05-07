@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// BACKUP of 'users' JSON in case it will be deleted from brackend server.
+/* users = [
+  {
+    name: 'Guest',
+    password: '000',
+    avatar: './img/guest.png',
+    email: 'guest@join.org',
+  },
+  {
+    name: 'Lukas Erdmanski',
+    password: '123',
+    avatar: './img/lukas.png',
+    email: 'lukas@join.org',
+  },
+  {
+    name: 'Nikola Badjevic',
+    password: '123',
+    avatar: './img/nikola.png',
+    email: 'nikola@join.org',
+  },
+  {
+    name: 'Phil Schmucker',
+    password: '123',
+    avatar: './img/phil.png',
+    email: 'phil@join.org',
+  },
+  {
+    name: 'Maik Langer',
+    password: '123',
+    avatar: './img/maik.png',
+    email: 'maik@join.org',
+  },
+]; */
+
+/**
+ * Checks if an email address and password are entered. Then login() is called.
+ */
+function verifyNull() {
+  let email = document
+    .getElementById("floatingEmail")
+    .value.trim()
+    .toLowerCase();
+  let password = document.getElementById("floatingPassword").value.trim();
+  if (!email.length &amp;&amp; !password.length) {
+    toastForEvent("toast-body-signIn", "Please enter input!");
+  } else if (!email.length) {
+    toastForEvent("toast-body-signIn", "Please enter email!");
+  } else if (!password.length) {
+    toastForEvent("toast-body-signIn", "Please enter password!");
+  } else {
+    login(email, password);
+  }
+}
+
+/**
+ * Checks if the entered email address and password match the array 'users'. If so, loginAsUser() is executed.
+ * @param {email} email - The e-mail address of the logging user.
+ * @param {password} password - The password of the logging user.
+ */
+function login(email, password) {
+  let checkEmail = false;
+  let checkPassword = false;
+  for (let i = 0; i &lt; users.length; i++) {
+    if (email.toLowerCase() == users[i].email.toLowerCase()) {
+      checkEmail = true;
+      if (password == users[i].password) {
+        checkPassword = true;
+        loginAsUser(i);
+      }
+    }
+  }
+  validationLogin(checkEmail, checkPassword);
+}
+
+/**
+ * Selects the desired container using the id and inserts a string as the toast message.
+ * @param {number} containerId - The id of the container.
+ * @param {string} text - The text inserted to be loaded into the toast
+ */
+function toastForEvent(containerId, text) {
+  let toastBody = document.getElementById(containerId);
+  toastBody.innerHTML = "";
+  toastBody.innerHTML = text;
+}
+
+/**
+ * Validates the email and password and redirects to index.html if this is the case.
+ * @param {boolean} checkEmail - The result of the e-mail address validation of the login to the app.
+ * @param {boolean} checkPassword - The result of the password validation of the login to the app.
+ */
+function validationLogin(checkEmail, checkPassword) {
+  if (checkEmail &amp;&amp; checkPassword) {
+    localStorage.setItem("isLoggedIn", true);
+    location.href = "index.html";
+  } else if (!checkEmail) {
+    toastForEvent(
+      "toast-body-signIn",
+      "Wrong email adress! Please check your input"
+    );
+  } else if (!checkPassword) {
+    toastForEvent(
+      "toast-body-signIn",
+      "Wrong password! Please check your input"
+    );
+  }
+}
+
+/**
+ * Pushes in currentUser the logged in user
+ * @param {number} i - The reference which user is logged in.
+ */
+async function loginAsUser(i) {
+  localStorage.setItem("currentUser", i);
+}
+
+/**
+ * Pushes in currentUser the logged in users
+ * @param {number} i - The reference which user is logged in.
+ */
+async function loginAsGuest() {
+  document.getElementById("floatingEmail").value = "guest@join.org";
+  document.getElementById("floatingPassword").value = "000";
+  await loginAsUser(0);
+  validationLogin(true, true);
+}
+
+/**
+ * Saves the information in the JSON 'users' as a new user.
+ */
+async function saveRegristration() {
+  users = await loadFromBackend("users");
+  let firstName = document.getElementById("floatingFirstNameRegister");
+  let lastName = document.getElementById("floatingLastNameRegister");
+  let email = document.getElementById("floatingEmailRegister");
+  let password = document.getElementById("floatingPasswordRegister1");
+  let avatar = checkSelectedAvatar();
+  let registration = {
+    name: firstName.value + " " + lastName.value,
+    password: password.value,
+    avatar: getRightSrcOfImg(avatar),
+    email: email.value,
+  };
+  users.push(registration);
+  await saveInBackend(users, "users");
+}
+
+/**
+ * Checks which HTML element was chosen as avatar.
+ * @returns {HTMLElement} The chosen HTML element as avatar.
+ */
+function checkSelectedAvatar() {
+  for (let i = 1; i &lt; 5; i++) {
+    let worker = document.getElementById(`worker${i}`);
+    if (worker.classList.contains("border-danger")) {
+      return worker;
+    }
+  }
+}
+
+/**
+ * Checks whether both password are identical.
+ */
+function checkPassword() {
+  let password1 = document.getElementById("floatingPasswordRegister1");
+  let password2 = document.getElementById("floatingPasswordRegister2");
+  if (password2.value == password1.value) {
+    password2.classList.add("is-valid");
+    password2.classList.remove("is-invalid");
+  } else {
+    password2.classList.add("is-invalid");
+    password2.classList.remove("is-valid");
+  }
+}
+
+/**
+ * Shows and hides password by checkbox.
+ */
+function showPassword() {
+  let passwords = document.querySelectorAll('input[placeholder="Password"]');
+  passwords.forEach((password) => {
+    if (password.type === "password") {
+      password.type = "text";
+    } else {
+      password.type = "password";
+    }
+  });
+}
+
+/**
+ * Highlights the chosen avatar.
+ */
+function highlightAvatar() {
+  for (let i = 1; i &lt; 5; i++) {
+    let gridRadio = document.getElementById(`gridRadios${i}`);
+    if (gridRadio.checked) {
+      document.getElementById(`worker${i}`).classList.add("border-danger");
+      document.getElementById(`worker${i}`).classList.remove("border-light");
+    } else {
+      document.getElementById(`worker${i}`).classList.remove("border-danger");
+      document.getElementById(`worker${i}`).classList.add("border-light");
+    }
+  }
+}
+
+/**
+ * The sing in button as the trigger to output a toast after the input on the login page has been checked.
+ */
+const TOAST_TRIGGER1 = document.getElementById("signInBtn");
+
+/**
+ * The toast output after the input on the login page has been checked after the click on the trigger (here: sign in button).
+ */
+const TOAST_LIVE_EXAMPLE1 = document.getElementById("signInToast");
+
+if (TOAST_TRIGGER1) {
+  TOAST_TRIGGER1.addEventListener("click", () => showToastOnSingIn());
+}
+
+/**
+ * Shows the toast on the login page after signing in.
+ */
+function showToastOnSingIn() {
+  verifyNull();
+  const TOAST_LOGIN = new bootstrap.Toast(TOAST_LIVE_EXAMPLE1);
+  TOAST_LOGIN.show();
+}
+
+/**
+ * The bootstrap modal object used on the the login page.
+ */
+const MY_MODAL_LOGIN = new bootstrap.Modal(
+  document.getElementById("staticBackdrop")
+);
+
+/**
+ * The HTML form element defining the type and scope of the HTML validation of the login modal.
+ */
+let formRegistery = document.getElementById("registery");
+
+formRegistery.addEventListener("submit", handleFormLogin);
+
+/**
+ * The HTML element of the bootstrap toast on the login page.
+ */
+const REGISTRATION_TOAST = document.getElementById("registrationToast");
+
+/**
+ * Shows the toast, saves the registered user and closes the modal after 2 seconds.
+ * @param {SubmitEvent} event - The returned event, which will be prevented.
+ */
+async function handleFormLogin(event) {
+  event.preventDefault();
+  toastForEvent("toast-body-registration", "Registration completed!");
+  const TOAST_LOGIN_HANDLE = new bootstrap.Toast(REGISTRATION_TOAST);
+  TOAST_LOGIN_HANDLE.show();
+  await saveRegristration();
+  formRegistery.reset();
+  setTimeout(function () {
+    MY_MODAL_LOGIN.hide();
+  }, 2000);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#adaptTask">adaptTask</a></li><li><a href="global.html#addChangeDirectionClassReverseChildren">addChangeDirectionClassReverseChildren</a></li><li><a href="global.html#addTask">addTask</a></li><li><a href="global.html#allCategories">allCategories</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#blueBorderImg">blueBorderImg</a></li><li><a href="global.html#BOARD_TOAST">BOARD_TOAST</a></li><li><a href="global.html#changeModalAvatarAfterSelect">changeModalAvatarAfterSelect</a></li><li><a href="global.html#changeModalUrgencyColor">changeModalUrgencyColor</a></li><li><a href="global.html#changeSelectedUser">changeSelectedUser</a></li><li><a href="global.html#checkIfLogin">checkIfLogin</a></li><li><a href="global.html#checkPassword">checkPassword</a></li><li><a href="global.html#checkSelectedAvatar">checkSelectedAvatar</a></li><li><a href="global.html#colorsCategory">colorsCategory</a></li><li><a href="global.html#configDragDropPressHoldMode">configDragDropPressHoldMode</a></li><li><a href="global.html#correctActiveIndicator">correctActiveIndicator</a></li><li><a href="global.html#currentDraggedElement">currentDraggedElement</a></li><li><a href="global.html#currentUser">currentUser</a></li><li><a href="global.html#currentUserImage">currentUserImage</a></li><li><a href="global.html#DATE_PICKER_SETTINGS">DATE_PICKER_SETTINGS</a></li><li><a href="global.html#dd">dd</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteUnsafedInput">deleteUnsafedInput</a></li><li><a href="global.html#filterNames">filterNames</a></li><li><a href="global.html#findUserIndexForOpenModal">findUserIndexForOpenModal</a></li><li><a href="global.html#formBoard">formBoard</a></li><li><a href="global.html#formRegistery">formRegistery</a></li><li><a href="global.html#generateAllTasks">generateAllTasks</a></li><li><a href="global.html#generateUsers">generateUsers</a></li><li><a href="global.html#genHTMLBoardTaskItem">genHTMLBoardTaskItem</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getRightSrcOfImg">getRightSrcOfImg</a></li><li><a href="global.html#handleFormAddTask">handleFormAddTask</a></li><li><a href="global.html#handleFormIndex">handleFormIndex</a></li><li><a href="global.html#handleFormLogin">handleFormLogin</a></li><li><a href="global.html#hideExitDoor">hideExitDoor</a></li><li><a href="global.html#highlightAvatar">highlightAvatar</a></li><li><a href="global.html#highlightCarouselControl">highlightCarouselControl</a></li><li><a href="global.html#highlightCarouselControlOnClick">highlightCarouselControlOnClick</a></li><li><a href="global.html#hightlight">hightlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#indexOflastSelectedUserOpenedModal">indexOflastSelectedUserOpenedModal</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBacklog">initBacklog</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initIndex">initIndex</a></li><li><a href="global.html#loadCurrentDate">loadCurrentDate</a></li><li><a href="global.html#loadFromBackend">loadFromBackend</a></li><li><a href="global.html#loadJSONFromServer">loadJSONFromServer</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#loginAsGuest">loginAsGuest</a></li><li><a href="global.html#loginAsUser">loginAsUser</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#mm">mm</a></li><li><a href="global.html#modalGenAllUser">modalGenAllUser</a></li><li><a href="global.html#modalHideAllUsers">modalHideAllUsers</a></li><li><a href="global.html#modalShowAllUsers">modalShowAllUsers</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#MY_CAROUSEL">MY_CAROUSEL</a></li><li><a href="global.html#MY_CAROUSEL_OPTIONS">MY_CAROUSEL_OPTIONS</a></li><li><a href="global.html#MY_MODAL">MY_MODAL</a></li><li><a href="global.html#MY_MODAL_LOGIN">MY_MODAL_LOGIN</a></li><li><a href="global.html#newTaskTemp">newTaskTemp</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#REGISTRATION_TOAST">REGISTRATION_TOAST</a></li><li><a href="global.html#removedChangeDirectionClassReverseBackChildren">removedChangeDirectionClassReverseBackChildren</a></li><li><a href="global.html#removeHeight">removeHeight</a></li><li><a href="global.html#removeHighlightCarouselControl">removeHighlightCarouselControl</a></li><li><a href="global.html#removeHightlight">removeHightlight</a></li><li><a href="global.html#renderAllColumns">renderAllColumns</a></li><li><a href="global.html#renderButtons">renderButtons</a></li><li><a href="global.html#renderColumn">renderColumn</a></li><li><a href="global.html#reverseChildren">reverseChildren</a></li><li><a href="global.html#reversed">reversed</a></li><li><a href="global.html#saveInBackend">saveInBackend</a></li><li><a href="global.html#saveJSONToServer">saveJSONToServer</a></li><li><a href="global.html#saveRegristration">saveRegristration</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#selectedUser">selectedUser</a></li><li><a href="global.html#selectUser">selectUser</a></li><li><a href="global.html#setDataBsTouchOnWinResize">setDataBsTouchOnWinResize</a></li><li><a href="global.html#setDatePickerSettings">setDatePickerSettings</a></li><li><a href="global.html#setHeight">setHeight</a></li><li><a href="global.html#setScrollbarHeightOfContentContainerOnSubPages">setScrollbarHeightOfContentContainerOnSubPages</a></li><li><a href="global.html#showAllUser">showAllUser</a></li><li><a href="global.html#showAllUserAndDisable">showAllUserAndDisable</a></li><li><a href="global.html#showExitDoor">showExitDoor</a></li><li><a href="global.html#showPassword">showPassword</a></li><li><a href="global.html#showToastOnSingIn">showToastOnSingIn</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#startSlideNext">startSlideNext</a></li><li><a href="global.html#startSlidePrev">startSlidePrev</a></li><li><a href="global.html#stopSlideJustOnDrop">stopSlideJustOnDrop</a></li><li><a href="global.html#stopSlideNext">stopSlideNext</a></li><li><a href="global.html#stopSlidePrev">stopSlidePrev</a></li><li><a href="global.html#switchExitDoor">switchExitDoor</a></li><li><a href="global.html#timeOut">timeOut</a></li><li><a href="global.html#TOAST_LIVE_EXAMPLE1">TOAST_LIVE_EXAMPLE1</a></li><li><a href="global.html#TOAST_TRIGGER1">TOAST_TRIGGER1</a></li><li><a href="global.html#toastForEvent">toastForEvent</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#urgencyBoard">urgencyBoard</a></li><li><a href="global.html#urgencyCol">urgencyCol</a></li><li><a href="global.html#users">users</a></li><li><a href="global.html#validationLogin">validationLogin</a></li><li><a href="global.html#verifyNull">verifyNull</a></li><li><a href="global.html#whiteBorderImg">whiteBorderImg</a></li><li><a href="global.html#yyyy">yyyy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sat Oct 08 2022 09:59:19 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

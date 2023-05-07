@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/media.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/datepicker.css" />
+
+    <script src="./js/mini_backend.js"></script>
+
+    <link rel="shortcut icon" href="./img/joinlogo.png" type="image/x-icon" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+
+    <!-- safe-area css -->
+    <link rel=" stylesheet" href="./css/safe-area.css" />
+  </head>
+
+  <body id="body" onload="initIndex()">
+    <div id="safeArea">
+      <!-- #region app window -->
+      <div
+        class="app-window h-100 w-100 d-flex flex-column flex-md-row overflow-hidden"
+      >
+        <div w3-include-html="navbar.html" class="top-0 z-index-100"></div>
+
+        <!-- #region work area (right site: content of the nav-link) -->
+        <div class="d-flex flex-grow-1 overflow-hidden">
+          <div class="w-100 py-sm-4">
+            <!-- #region carousel -->
+            <div
+              id="carousel"
+              class="carousel slide h-100 d-flex justify-content-between"
+              data-bs-touch="false"
+            >
+              <!-- carousel control prev button -->
+              <button
+                id="left-slide-button"
+                class="d-sm-none mt-0 carousel-control-prev d-flex flex-column h-100"
+                type="button"
+                data-bs-target="#carousel"
+                data-bs-slide="prev"
+              >
+                <span
+                  id="left-arrow"
+                  class="carousel-control-prev-icon w-100 h-100 text-white d-flex justify-content-center align-items-center carousel-control-text"
+                  aria-hidden="true"
+                  ondragover="highlightCarouselControl('left')"
+                  ondragleave="stopSlidePrev(), removedChangeDirectionClassReverseBackChildren(), removeHighlightCarouselControl('left')"
+                  ondragenter="addChangeDirectionClassReverseChildren(); startSlidePrev()"
+                  onclick="highlightCarouselControlOnClick('left')"
+                  >Drag</span
+                >
+              </button>
+
+              <!-- #region carousel inner with slide columns -->
+              <div
+                id="carousel-inner"
+                class="carousel-inner d-sm-flex align-items-sm-center justify-content-sm-center"
+              >
+                <div id="0" class="all carousel-item active h-100">
+                  <div class="d-flex flex-column align-items-center h-100">
+                    <span class="fw-bold fs-5 my-1 column-name text-dark"
+                      >TO DO</span
+                    >
+                    <div
+                      id="toDoColumn"
+                      class="board-column bg-grey scroll-index flex-grow-1 w-100 px-1"
+                      ondrop="moveTo('toDo'), removeHightlight('toDoColumn')"
+                      ondragover="allowDrop(event), hightlight('toDoColumn')"
+                      ondragleave="removeHightlight('toDoColumn')"
+                    ></div>
+                  </div>
+                </div>
+
+                <div id="1" class="all carousel-item h-100">
+                  <div class="d-flex flex-column align-items-center h-100">
+                    <span class="fw-bold fs-5 my-1 column-name text-dark"
+                      >IN PROGRESS</span
+                    >
+                    <div
+                      id="inProgressColumn"
+                      class="board-column bg-grey hiddenScrollbarScrollbar flex-grow-1 w-100 px-1"
+                      ondrop="moveTo('inProgress'), removeHightlight('inProgressColumn')"
+                      ondragover="allowDrop(event), hightlight('inProgressColumn')"
+                      ondragleave="removeHightlight('inProgressColumn')"
+                    ></div>
+                  </div>
+                </div>
+
+                <div id="2" class="all carousel-item h-100">
+                  <div class="d-flex flex-column align-items-center h-100">
+                    <span class="fw-bold fs-5 my-1 column-name text-dark"
+                      >TESTING</span
+                    >
+                    <div
+                      id="testingColumn"
+                      class="board-column bg-grey hiddenScrollbarScrollbar flex-grow-1 w-100 px-1"
+                      ondrop="moveTo('testing'), removeHightlight('testingColumn')"
+                      ondragover="allowDrop(event), hightlight('testingColumn')"
+                      ondragleave="removeHightlight('testingColumn')"
+                    ></div>
+                  </div>
+                </div>
+
+                <div id="3" class="all carousel-item h-100">
+                  <div class="d-flex flex-column align-items-center h-100">
+                    <span class="fw-bold fs-5 my-1 column-name text-dark"
+                      >DONE</span
+                    >
+                    <div
+                      id="doneColumn"
+                      class="board-column bg-grey hiddenScrollbarScrollbar flex-grow-1 w-100 px-1"
+                      ondrop="moveTo('done'), removeHightlight('doneColumn')"
+                      ondragover="allowDrop(event), hightlight('doneColumn')"
+                      ondragleave="removeHightlight('doneColumn')"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!-- endregion carousel inner with slide columns -->
+
+              <!-- carousel control next button -->
+              <button
+                id="right-slide-button"
+                class="d-sm-none mt-0 carousel-control-next d-flex flex-column"
+                type="button"
+                data-bs-target="#carousel"
+                data-bs-slide="next"
+              >
+                <span
+                  id="right-arrow"
+                  class="carousel-control-next-icon w-100 h-100 text-white d-flex justify-content-center align-items-center carousel-control-text"
+                  aria-hidden="true"
+                  ondragover="highlightCarouselControl('right')"
+                  ondragleave="stopSlideNext(), removeHighlightCarouselControl('right')"
+                  ondragenter="startSlideNext()"
+                  onclick="highlightCarouselControlOnClick('right')"
+                  >Drag</span
+                >
+              </button>
+
+              <!-- carousel indicators -->
+              <div
+                id="carousel-indicators"
+                class="d-sm-none carousel-indicators"
+              >
+                <button
+                  id="ind0"
+                  type="button"
+                  data-bs-target="#carousel"
+                  data-bs-slide-to="0"
+                  class="active"
+                  aria-current="true"
+                  aria-label="Slide 0"
+                ></button>
+                <button
+                  id="ind1"
+                  type="button"
+                  data-bs-target="#carousel"
+                  data-bs-slide-to="1"
+                  aria-label="Slide 1"
+                ></button>
+                <button
+                  id="ind2"
+                  type="button"
+                  data-bs-target="#carousel"
+                  data-bs-slide-to="2"
+                  aria-label="Slide 2"
+                ></button>
+                <button
+                  id="ind3"
+                  type="button"
+                  data-bs-target="#carousel"
+                  data-bs-slide-to="3"
+                  aria-label="Slide 3"
+                ></button>
+              </div>
+            </div>
+            <!-- endregion carousel -->
+          </div>
+        </div>
+        <!-- endregion work area (right site: content of the nav-link) -->
+
+        <!-- #region modal -->
+        <div
+          class="modal fade hiddenScrollbar"
+          id="staticBackdrop"
+          data-bs-keyboard="true"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <form class="d-flex justify-content-center" id="boardSubmit">
+                <div id="boardUrgency" class="w-100 rounded-2 bg-grey m-0">
+                  <!-- title -->
+                  <div class="m-2 m-sm-4">
+                    <h4 class="main-color"><b>TITLE</b></h4>
+                    <input
+                      id="modalTitle"
+                      class="rounded fs-5 p-2 bs-simple w-100"
+                      required
+                      minlength="3"
+                      placeholder="Add a title"
+                    />
+                  </div>
+
+                  <!-- date -->
+                  <div class="m-2 m-sm-4">
+                    <h4 class="main-color"><b>DUE DATE</b></h4>
+                    <div class="container m-0 p-0">
+                      <form autocomplete="off">
+                        <div class="flex-row d-flex">
+                          <div class="w-100">
+                            <div class="input-group input-daterange w-100">
+                              <input
+                                id="modalDate"
+                                placeholder="Choose date"
+                                required
+                                type="text"
+                                class="p-2 form-control text-start fs-5 rounded"
+                              />
+                              <span class="fa fa-calendar" id="fa-1"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <!-- category -->
+                  <div class="m-2 m-sm-4">
+                    <h4 class="main-color"><b>CATEGORY</b></h4>
+                    <form class="w-100">
+                      <select
+                        id="modalCategory"
+                        class="p-2 rounded fs-5 p-2 bs-simple w-100"
+                      >
+                        <option value="Sales">Sales</option>
+                        <option value="IT">IT</option>
+                        <option value="Production">Production</option>
+                        <option value="Management">Management</option>
+                        <option value="Design">Design</option>
+                        <option value="Marketing">Marketing</option>
+                      </select>
+                    </form>
+                  </div>
+
+                  <!-- urgency -->
+                  <div class="m-2 m-sm-4">
+                    <h4 class="main-color"><b>URGENCY</b></h4>
+                    <form class="w-100">
+                      <select
+                        onchange="changeModalUrgencyColor()"
+                        id="modalUrgency"
+                        class="rounded fs-5 p-2 bs-simple w-100"
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                      </select>
+                    </form>
+                  </div>
+
+                  <!-- description -->
+                  <div class="d-flex flex-column m-2 m-sm-4">
+                    <h4 class="main-color"><b>DESCRIPTION</b></h4>
+                    <textarea
+                      id="modalDescription"
+                      required
+                      class="rounded fs-5 p-2 bs-simple w-100 h-100"
+                      minlength="3"
+                      rows="2"
+                      cols="50"
+                      placeholder="Add your notes"
+                    ></textarea>
+                  </div>
+
+                  <!-- assigned to -->
+                  <div class="m-2 m-sm-4">
+                    <h4 class="main-color mb-1"><b>ASSIGNED TO</b></h4>
+                    <div
+                      id="modalAssignedUser"
+                      class="w-100 position-relative modalAssignedUser"
+                    >
+                      <img
+                        id="modalSelectedUser"
+                        class="assigendToImg rounded-circle border border-4 border-primary m-1"
+                        src="img/lukas.png"
+                        onclick="modalShowAllUsers()"
+                      />
+                      <div
+                        id="modalUserCollection"
+                        class="d-none modal-user-collection d-flex flex-column rounded"
+                        onclick="modalHideAllUsers()"
+                        onmouseleave="modalHideAllUsers()"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- buttons-->
+                  <div
+                    id="modalBoardBtns"
+                    class="m-2 m-sm-4 d-flex justify-content-between"
+                  ></div>
+                </div>
+
+                <!-- toast -->
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                  <div
+                    id="boardToast"
+                    class="toast"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    <div class="d-flex align-items-center">
+                      <div class="toast-body">Changes saved!</div>
+                      <button
+                        class="btn-close me-2 m-auto"
+                        type="button"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- endregion modal -->
+      </div>
+      <!-- endregion app window -->
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/helpers.js"></script>
+    <script src="./js/template.js"></script>
+    <script src="./js/script.js"></script>
+    <script src=" ./js/DragDropTouch.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/date.js"></script>
+  </body>
+</html>

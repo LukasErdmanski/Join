@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.2.0"
+  },
+  "devDependencies": {
+    "docdash": "^1.2.0",
+    "jsdoc": "^3.6.11",
+    "jsdoc-to-markdown": "^7.1.1",
+    "minami": "^1.2.3"
+  }
+}

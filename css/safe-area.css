@@ -1,0 +1,35 @@
+body {
+  /* heigt of the body should be 100 vh */
+  height: 100vh !important;
+  margin: 0px !important;
+}
+
+#safeArea {
+  width: 100vw !important;
+  height: 100%;
+}
+
+@media (max-width: 575px) {
+  body {
+    /* Should be the same color like the safe area not to see the color differance when the height of the safe area div increase after scrolling up / scrolling away the search bar. */
+    background-color: black !important;
+    /* margin at the body has to be like in the user agent style sheet, it means; 8px. Otherwise it does not work.  */
+    margin: revert !important;
+  }
+
+  #safeArea {
+    background-color: black !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+    top: constant(safe-area-inset-top);
+    top: env(safe-area-inset-top);
+    left: 0;
+    right: 0;
+    bottom: constant(safe-area-inset-bottom);
+    bottom: env(safe-area-inset-bottom);
+  }
+}

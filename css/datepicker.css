@@ -1,0 +1,178 @@
+#fa-1 {
+  left: calc(50% - 40px);
+}
+
+#fa-2 {
+  left: calc(100% - 40px);
+}
+
+.form-control-placeholder {
+  position: absolute;
+  top: -10px !important;
+  padding: 12px 2px 0 2px;
+  opacity: 0.1;
+  color: #e1e1e1;
+}
+
+#end-p {
+  left: calc(50% + 4px);
+}
+
+.form-control:focus+.form-control-placeholder,
+.form-control:valid+.form-control-placeholder {
+  font-size: 95%;
+  top: 10px;
+  transform: translate3d(0, -100%, 0);
+  opacity: 1;
+}
+
+button:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline-width: 0;
+}
+
+.datepicker {
+  background-color: rgb(255, 255, 255);
+  border-radius: 0 !important;
+  align-content: center !important;
+  padding: 0 !important;
+}
+
+.datepicker-dropdown {
+  border-right: #1976d2;
+  border-left: #1976d2;
+}
+
+.datepicker-dropdown.datepicker-orient-left:before {
+  left: calc(50% - 6px) !important;
+}
+
+.datepicker-dropdown.datepicker-orient-left:after {
+  left: calc(50% - 5px) !important;
+  border-bottom-color: #1976d2;
+}
+
+.datepicker-dropdown.datepicker-orient-right:after {
+  border-bottom-color: #1976d2;
+}
+
+.datepicker table tr td.today,
+span.focused {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#fff3e0, #ffe0b2);
+}
+
+thead tr:nth-child(2) {
+  background-color: #212d8d !important;
+}
+
+tbody tr td {
+  padding: 10px !important;
+}
+
+tfoot tr:nth-child(2) th {
+  padding: 10px !important;
+  border-top: 1px solid #cfd8dc !important;
+}
+
+.cw {
+  font-size: 14px !important;
+  background-color: #e8eaf6 !important;
+  border-radius: 0px !important;
+  padding: 0px 20px !important;
+  margin-right: 10px solid #fff !important;
+}
+
+.old,
+.day,
+.new {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 0px !important;
+}
+
+.day.old,
+.day.new {
+  color: #e0e0e0 !important;
+}
+
+.day.old:hover,
+.day.new:hover {
+  border-radius: 50% !important;
+}
+
+.old-day:hover,
+.day:hover,
+.new-day:hover,
+.month:hover,
+.year:hover,
+.decade:hover,
+.century:hover {
+  border-radius: 50% !important;
+  background-color: #eee;
+}
+
+.active {
+  border-radius: 50% !important;
+  color: #fff !important;
+}
+
+.range-start,
+.range-end {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#212d8d, #212d8d) !important;
+}
+
+.range {
+  background-color: #e3f2fd !important;
+}
+
+.prev,
+.next,
+.datepicker-switch {
+  border-radius: 0 !important;
+  padding: 10px 10px 10px 10px !important;
+  font-size: 18px;
+  opacity: 1;
+  color: #fff;
+}
+
+.prev:hover,
+.next:hover,
+.datepicker-switch:hover {
+  background-color: inherit !important;
+  opacity: 1;
+}
+
+@media screen and (max-width: 726px) {
+  .datepicker-dropdown.datepicker-orient-right:before {
+    right: calc(50% - 6px);
+  }
+
+  .datepicker-dropdown.datepicker-orient-right:after {
+    right: calc(50% - 5px);
+  }
+}
+
+.datepicker {
+ position: fixed !important;
+}
+
+.datepicker-days {
+  border: 3px solid rgba(0, 0, 0, 0.575);
+}
+
+@media screen and (max-width: 575px) {
+  .datepicker {
+    left: 16px !important;
+    right: 16px;
+    margin: auto;
+    max-width: fit-content;
+  }
+
+  .table-condensed td {
+    padding: 2px !important;
+  }
+}
