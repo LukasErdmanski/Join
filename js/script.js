@@ -81,6 +81,7 @@ async function initAddTask() {
   checkIfLogin();
   await init();
   await includeHTML();
+    
   await currentUserImage();
   showAllUser();
   document.getElementById('addTaskNav').classList.add('you-are-here');
