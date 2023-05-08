@@ -18,8 +18,8 @@
   left: calc(50% + 4px);
 }
 
-.form-control:focus+.form-control-placeholder,
-.form-control:valid+.form-control-placeholder {
+.form-control:focus + .form-control-placeholder,
+.form-control:valid + .form-control-placeholder {
   font-size: 95%;
   top: 10px;
   transform: translate3d(0, -100%, 0);
@@ -157,7 +157,7 @@ tfoot tr:nth-child(2) th {
 }
 
 .datepicker {
- position: fixed !important;
+  position: fixed !important;
 }
 
 .datepicker-days {
