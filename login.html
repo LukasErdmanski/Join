@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join</title>
+    <title>Join | Login</title>
     <!-- CSS only -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -130,7 +130,9 @@
                        m-2" 
                 type="button" 
                 data-bs-toggle="modal" 
-                data-bs-target="#staticBackdrop">Register
+                data-bs-target="#staticBackdrop"
+                onclick="changeSiteTitle('Join | Registration')">
+                Register
               </button>
             </div>
 
@@ -158,7 +160,9 @@
                     type="button" 
                     class="btn-close" 
                     data-bs-dismiss="modal" 
-                    aria-label="Close"></button>
+                    aria-label="Close"
+                    onclick="changeSiteTitle('Join | Login')"
+                    ></button>
                 </div>
                 <div class="modal-body ">
                   <form 

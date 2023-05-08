@@ -79,7 +79,7 @@ function genHTMLBoardTaskItem(task) {
       ondragstart="startDragging(${task["id"]})" 
       data-bs-toggle="modal" 
       data-bs-target="#staticBackdrop"
-      onclick="openModal(${task["id"]})">
+      onclick="openModal(${task["id"]}), changeSiteTitle('Join | Board | Edit task')">
         <div class="card-header p-1 fs-6">
         <span 
           class="badge p-1 fw-semibold" 
@@ -118,7 +118,7 @@ function renderButtons(indexTask) {
     type="button"
     data-bs-dismiss="modal" 
     value="Delete" 
-    onclick="deleteTask(${indexTask}, renderAllColumns)" >
+    onclick="deleteTask(${indexTask}, renderAllColumns), changeSiteTitle('Join | Board')">
   <div>
     <input 
       title="Cancel the changes and close the task." 
@@ -126,14 +126,15 @@ function renderButtons(indexTask) {
       class="btn btn-outline-secondary p-1 p-sm-2 me-1 me-sm-3" 
       type="button"
       data-bs-dismiss="modal" 
-      value="Cancel">
+      value="Cancel"
+      onclick="adaptTask(${indexTask}, renderAllColumns), changeSiteTitle('Join | Board')">
     <input 
       title="Save the changes to the task and close it." 
       id="modalSaveBtn"
       class="btn btn-primary p-1 p-sm-2" 
       type="submit" 
       value="Save" 
-      onclick="adaptTask(${indexTask}, renderAllColumns)">
+      onclick="adaptTask(${indexTask}, renderAllColumns), changeSiteTitle('Join | Board')">
   </div>
   `;
 }

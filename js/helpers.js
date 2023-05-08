@@ -119,9 +119,7 @@ function changeModalUrgencyColor() {
   urgencyCol(urgency);
 }
 
-window.addEventListener('resize', () =>
-  setScrollbarHeightOfContentContainerOnSubPages()
-);
+window.addEventListener('resize', () => setScrollbarHeightOfContentContainerOnSubPages());
 
 /**
  * Sets the scrollbar height of the content container on the sub pages onload of the sub page
@@ -195,4 +193,12 @@ function switchExitDoor() {
   if (window.innerWidth < 768) {
     document.getElementById('door').classList.toggle('door-visible');
   }
+}
+
+/**
+ * Cchanges the title of a website.
+ * @param newTitle - a string representing the new title that will be set for the current webpage.
+ */
+function changeSiteTitle(newTitle) {
+  document.title = newTitle;
 }
