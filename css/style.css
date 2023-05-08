@@ -380,6 +380,7 @@ body {
 .btn:disabled,
 fieldset:disabled .btn {
   pointer-events: unset;
+  opacity: 0.3;
 }
 
 /* Usual and bootstrap buttons */
@@ -391,6 +392,7 @@ button:enabled,
 button:disabled:hover,
 .btn:disabled:hover {
   cursor: not-allowed;
+
 }
 
 /* For bootstrap buttons defined as input[type="submit"] */
