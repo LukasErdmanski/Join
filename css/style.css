@@ -73,7 +73,7 @@ body {
   align-items: center;
   background-color: rgb(255, 255, 255);
   height: 100vh;
-  font-family: "PT Sans", sans-serif;
+  font-family: 'PT Sans', sans-serif;
   touch-action: none !important;
 }
 
@@ -347,7 +347,7 @@ body {
 /* Add Task CSS */
 
 .font {
-  font-family: "PT Sans", sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 .user-show {
@@ -374,6 +374,32 @@ body {
 
 .buttons-Task input {
   min-width: 100px;
+}
+
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  pointer-events: unset;
+}
+
+/* Usual and bootstrap buttons */
+button:enabled,
+.btn:enabled {
+  cursor: pointer;
+}
+
+button:disabled:hover,
+.btn:disabled:hover {
+  cursor: not-allowed;
+}
+
+/* For bootstrap buttons defined as input[type="submit"] */
+input[type='submit']:enabled {
+  cursor: pointer;
+}
+
+input[type='submit']:disabled:hover {
+  cursor: not-allowed;
 }
 
 /*  BACKLOG  */

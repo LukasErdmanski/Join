@@ -1,2 +1,13 @@
 
 C:\Users\fraw823e\OneDrive - ISHGroup\_DA\M10me\Join>git pull 
+Already up to date.
+
+C:\Users\fraw823e\OneDrive - ISHGroup\_DA\M10me\Join>git add . 
+
+C:\Users\fraw823e\OneDrive - ISHGroup\_DA\M10me\Join>git commit -m "Updated the width of the add task subpage -- font style css" 
+[master a0ed713] Updated the width of the add task subpage -- font style css
+ 4 files changed, 146 insertions(+)
+ create mode 100644 Added
+ create mode 100644 addTask copy.html
+
+C:\Users\fraw823e\OneDrive - ISHGroup\_DA\M10me\Join>git push 
