@@ -21,7 +21,7 @@
   <body onload="init()" class="login-body">
     <div class="login-bg w-100 h-100 d-flex justify-content-center align-items-center">
       <div
-        class="login-card card d-flex justify-content-center align-items-center"
+        class="login-card card d-flex justify-content-center align-items-center m-3"
         style="width: 30rem">
         <img 
           class="rounded 
@@ -79,7 +79,7 @@
                          m-2" 
                   type="submit" 
                   id="signInBtn">
-                  Sign in
+                  Log in
                 </button> 
 
                 <!-- Toast Container -->
@@ -122,7 +122,7 @@
                      btn-outline-secondary 
                      m-2"
               onclick="loginAsGuest()">
-                  Sign in as guest
+                  Log in as guest
               </button>                
               <button 
                 class="btn 
@@ -216,10 +216,6 @@
                       <label 
                         class="form-label"
                         for="floatingPasswordRegister1">Password</label>
-                      <input 
-                        class="mt-3" 
-                        type="checkbox" 
-                        onclick="showPassword()"> Show Password
                     </div> 
                     <div class="form-floating 
                                 mb-2" >
@@ -233,6 +229,10 @@
                         class="form-label"
                         for="floatingPasswordRegister2">Repeat password
                       </label>
+                      <input 
+                      class="mt-3" 
+                      type="checkbox" 
+                      onclick="showPassword()"> Show Passwords
                     </div> 
                                                   
                     <fieldset 
